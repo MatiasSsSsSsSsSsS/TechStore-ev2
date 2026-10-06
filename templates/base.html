@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es" data-bs-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}TechStore INACAP{% endblock %}</title>
+  
+  <!-- Bootstrap 5.3 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  
+</head>
+
+<body class="d-flex flex-column min-vh-100">
+
+  <!-- Barra de navegación Bootstrap estándar -->
+  <nav class="navbar navbar-expand-lg bg-body-tertiary border-bottom mb-4">
+    <div class="container">
+      <a class="navbar-brand fw-bold" href="{% url 'catalogo:producto_list' %}">
+        <i class="bi bi-laptop me-1"></i> TechStore INACAP
+      </a>
+
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav me-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'catalogo:producto_list' %}">
+              <i class="bi bi-grid me-1"></i> Catálogo
+            </a>
+          </li>
+          {% if user.is_authenticated %}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'catalogo:producto_create' %}">
+                <i class="bi bi-plus-circle me-1"></i> Agregar Producto
+              </a>
+            </li>
+            {% if user.is_staff %}
+              <li class="nav-item">
+                <a class="nav-link text-body-secondary" href="/admin/" target="_blank">
+                  <i class="bi bi-gear me-1"></i> Admin Django
+                </a>
+              </li>
+            {% endif %}
+          {% endif %}
+        </ul>
+
+        <!-- Estado de sesión -->
+        <div class="d-flex align-items-center gap-2">
+          {% if user.is_authenticated %}
+            <span class="navbar-text me-2 small">
+              <i class="bi bi-person-fill"></i> {{ user.username }}
+            </span>
+            <a href="{% url 'logout' %}" class="btn btn-outline-danger btn-sm">
+              <i class="bi bi-box-arrow-right"></i> Cerrar Sesión
+            </a>
+          {% else %}
+            <a href="{% url 'login' %}" class="btn btn-primary btn-sm">
+              <i class="bi bi-box-arrow-in-right"></i> Iniciar Sesión
+            </a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Mensajes y alertas del sistema -->
+  {% if messages %}
+  <div class="container mb-3" id="alert-container">
+    {% for message in messages %}
+      <div class="alert alert-{% if message.tags == 'error' %}danger{% elif message.tags %}{{ message.tags }}{% else %}info{% endif %} alert-dismissible fade show shadow-sm" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+      </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <!-- Contenido principal -->
+  <main class="container mb-5 flex-grow-1">
+    {% block content %}
+    {% endblock %}
+  </main>
+
+  <!-- Footer estándar -->
+  <footer class="mt-auto py-3 bg-body-tertiary border-top text-center text-body-secondary">
+    <div class="container">
+      <small>TechStore INACAP &copy; 2026 - Evaluación Sumativa 2 (CRUD Django)</small>
+    </div>
+  </footer>
+
+  <!-- Bootstrap 5.3 JS Bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Auto-cerrar alertas después de 4 segundos
+    setTimeout(() => {
+      document.querySelectorAll('.alert').forEach(alert => {
+        const bsAlert = bootstrap.Alert.getOrCreateInstance(alert);
+        bsAlert.close();
+      });
+    }, 4000);
+  </script>
+  {% block extra_js %}{% endblock %}
+</body>
+</html>

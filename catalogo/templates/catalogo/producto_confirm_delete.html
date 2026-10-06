@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block title %}Eliminar Producto | TechStore INACAP{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center py-4">
+  <div class="col-md-6 col-lg-5">
+    
+    <div class="card shadow-sm border-danger text-center">
+      <div class="card-header bg-danger text-white">
+        <h2 class="h5 mb-0">Confirmar Eliminación</h2>
+      </div>
+
+      <div class="card-body p-4">
+        <p class="card-text mb-3">¿Está seguro de que desea eliminar el siguiente producto del inventario?</p>
+
+        <div class="card bg-body-tertiary p-3 mb-4 text-start">
+          <h5 class="fw-bold mb-1">{{ producto.nombre }}</h5>
+          <div class="text-body-secondary small">
+            <div>Categoría: {{ producto.get_categoria_display }}</div>
+            <div>Precio: ${{ producto.precio }} CLP</div>
+            <div>Stock actual: {{ producto.stock }} unidades</div>
+          </div>
+        </div>
+
+        <form method="post" class="d-flex justify-content-center gap-2">
+          {% csrf_token %}
+          <a href="{% url 'catalogo:producto_list' %}" class="btn btn-secondary">
+            Cancelar
+          </a>
+          <button type="submit" class="btn btn-danger">
+            <i class="bi bi-trash"></i> Sí, Eliminar
+          </button>
+        </form>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endblock %}
