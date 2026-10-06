@@ -29,7 +29,7 @@ Este proyecto simula una tienda de tecnología con un catálogo público y un pa
 
 ## Requisitos
 
-- Python 3.10 o superior
+- Python 3.12 o superior
 - Django instalado mediante requirements.txt
 - Entorno virtual recomendado
 
